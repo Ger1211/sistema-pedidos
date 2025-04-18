@@ -8,7 +8,7 @@ Los encargados de cocina pueden ver y actualizar el estado de los pedidos en tie
 ## ✨ Características
 
 - Registro e inicio de sesión con JWT.
-- Seguridad con Spring Security y roles (`ADMIN`, `CLIENTE`).
+- Seguridad con Spring Security y roles (`ADMIN`, `CLIENTE`, `COCINA`).
 - Gestión de usuarios, productos y pedidos.
 - Integración con base de datos PostgreSQL.
 - Migraciones con Flyway.

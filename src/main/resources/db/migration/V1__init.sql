@@ -9,3 +9,11 @@ CREATE TABLE usuario_roles (
     roles VARCHAR(50) NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE
 );
+
+CREATE TABLE producto (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(255),
+    descripcion TEXT,
+    precio DECIMAL(10, 2),
+    stock INT
+);
