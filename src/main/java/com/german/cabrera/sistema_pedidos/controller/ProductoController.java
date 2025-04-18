@@ -31,4 +31,10 @@ public class ProductoController {
     public ResponseEntity<?> actualizar(@Valid @RequestBody ProductoRequest producto) {
         return ResponseEntity.ok(productoService.actualizar(producto));
     }
+
+    @DeleteMapping
+    public ResponseEntity<?> eliminar(@RequestParam long productoId) {
+        productoService.eliminar(productoId);
+        return ResponseEntity.noContent().build();
+    }
 }

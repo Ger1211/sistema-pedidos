@@ -35,6 +35,10 @@ public class ProductoService {
         return crearOActualizar(producto);
     }
 
+    public void eliminar(long productoId) {
+        productoRepository.deleteById(productoId);
+    }
+
     private Producto crearOActualizar(ProductoRequest producto) {
         Producto productoACrearOActualizar = new Producto(producto);
         return productoRepository.save(productoACrearOActualizar);

@@ -3,6 +3,7 @@ package com.german.cabrera.sistema_pedidos.integracion.service;
 import com.german.cabrera.sistema_pedidos.builder.ProductoBuilder;
 import com.german.cabrera.sistema_pedidos.dto.producto.ProductoRequest;
 import com.german.cabrera.sistema_pedidos.model.Producto;
+import com.german.cabrera.sistema_pedidos.repository.ProductoRepository;
 import com.german.cabrera.sistema_pedidos.service.ProductoService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,6 +23,9 @@ public class ProductoServiceTests extends IntegrationTests {
 
     @Autowired
     private ProductoService productoService;
+
+    @Autowired
+    private ProductoRepository productoRepository;
 
     @Test
     void obtenerTodos_conProductoExistente_retornaListaConEseProducto() {
@@ -120,5 +125,17 @@ public class ProductoServiceTests extends IntegrationTests {
 
         String message = assertThrows(IllegalArgumentException.class, () -> productoService.actualizar(producto)).getMessage();
         assertEquals("El producto a actualizar debe tener id", message);
+    }
+
+    @Test
+    void eliminar_conProductoExistente_eliminaProducto() {
+        Producto producto = ProductoBuilder.basic().build(entityManager);
+        Long id = producto.getId();
+        assertNotNull(id);
+
+        productoService.eliminar(id);
+
+        Optional<Producto> productoEliminado = productoRepository.findById(id);
+        assertTrue(productoEliminado.isEmpty());
     }
 }
