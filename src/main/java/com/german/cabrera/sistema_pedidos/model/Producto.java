@@ -23,6 +23,7 @@ public class Producto {
     private int stock;
 
     public Producto(ProductoRequest productoRequest) {
+        this.id = productoRequest.getId();
         this.nombre = productoRequest.getNombre();
         this.descripcion = productoRequest.getDescripcion();
         this.precio = productoRequest.getPrecio();

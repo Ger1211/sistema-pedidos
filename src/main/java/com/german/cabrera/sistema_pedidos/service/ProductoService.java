@@ -24,8 +24,8 @@ public class ProductoService {
                 .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado"));
     }
 
-    public Producto crear(ProductoRequest producto) {
-        Producto productoACrear = new Producto(producto);
-        return productoRepository.save(productoACrear);
+    public Producto crearOActualizar(ProductoRequest producto) {
+        Producto productoACrearOActualizar = new Producto(producto);
+        return productoRepository.save(productoACrearOActualizar);
     }
 }

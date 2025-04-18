@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @Data
 @Builder
 public class ProductoRequest {
+    Long id;
     @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
     @NotBlank(message = "La descripcion no puede estar vacía")

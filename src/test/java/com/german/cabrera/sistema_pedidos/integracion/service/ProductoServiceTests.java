@@ -52,7 +52,7 @@ public class ProductoServiceTests extends IntegrationTests {
     }
 
     @Test
-    void crear_conProductoValido_retornaProductoCreado() {
+    void crearOActualizar_conProductoValidoInexistente_retornaProductoCreado() {
         ProductoRequest producto = ProductoRequest.builder()
                 .nombre("Arroz")
                 .descripcion("Arroz blanco grano fino")
@@ -60,9 +60,36 @@ public class ProductoServiceTests extends IntegrationTests {
                 .stock(0)
                 .build();
 
-        Producto productoCreado = productoService.crear(producto);
+        Producto productoCreado = productoService.crearOActualizar(producto);
 
         assertNotNull(productoCreado);
         assertNotNull(productoCreado.getId());
+    }
+
+    @Test
+    void crearOActualizar_conProductoValidoExistente_retornaProductoActualizado() {
+        String nuevoNombre = "Arroz Grano Fino";
+
+        Producto productoExistente = ProductoBuilder.basic()
+                .conNombre("Arroz")
+                .conDescripcion("Arroz blanco grano fino")
+                .conPrecio(BigDecimal.TEN)
+                .conStock(1)
+                .build(entityManager);
+
+        ProductoRequest producto = ProductoRequest.builder()
+                .id(productoExistente.getId())
+                .nombre(nuevoNombre)
+                .descripcion(productoExistente.getDescripcion())
+                .precio(productoExistente.getPrecio())
+                .stock(productoExistente.getStock())
+                .build();
+
+        Producto productoActualizado = productoService.crearOActualizar(producto);
+
+        assertNotNull(productoActualizado);
+        assertNotNull(productoActualizado.getId());
+        assertEquals(productoExistente.getId(), productoActualizado.getId());
+        assertEquals(nuevoNombre, productoActualizado.getNombre());
     }
 }

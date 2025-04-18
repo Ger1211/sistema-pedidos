@@ -18,4 +18,24 @@ public class ProductoBuilder extends AbstractPersistenceBuilder<Producto> {
     public static ProductoBuilder basic() {
         return new ProductoBuilder();
     }
+
+    public ProductoBuilder conNombre(String nombre) {
+        this.instance.setNombre(nombre);
+        return this;
+    }
+
+    public ProductoBuilder conDescripcion(String descripcion) {
+        this.instance.setDescripcion(descripcion);
+        return this;
+    }
+
+    public ProductoBuilder conPrecio(BigDecimal precio) {
+        this.instance.setPrecio(precio);
+        return this;
+    }
+
+    public ProductoBuilder conStock(int stock) {
+        this.instance.setStock(stock);
+        return this;
+    }
 }

@@ -23,7 +23,7 @@ public class ProductoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@Valid @RequestBody ProductoRequest producto) {
-        return ResponseEntity.ok(productoService.crear(producto));
+    public ResponseEntity<?> crearOActualizar(@Valid @RequestBody ProductoRequest producto) {
+        return ResponseEntity.ok(productoService.crearOActualizar(producto));
     }
 }
