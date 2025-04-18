@@ -52,7 +52,7 @@ public class ProductoServiceTests extends IntegrationTests {
     }
 
     @Test
-    void crearOActualizar_conProductoValidoInexistente_retornaProductoCreado() {
+    void crear_conProductoValidoInexistente_retornaProductoCreado() {
         ProductoRequest producto = ProductoRequest.builder()
                 .nombre("Arroz")
                 .descripcion("Arroz blanco grano fino")
@@ -60,14 +60,29 @@ public class ProductoServiceTests extends IntegrationTests {
                 .stock(0)
                 .build();
 
-        Producto productoCreado = productoService.crearOActualizar(producto);
+        Producto productoCreado = productoService.crear(producto);
 
+        assertNull(producto.getId());
         assertNotNull(productoCreado);
         assertNotNull(productoCreado.getId());
     }
 
     @Test
-    void crearOActualizar_conProductoValidoExistente_retornaProductoActualizado() {
+    void crear_conProductoConId_lanzaExcepcion() {
+        ProductoRequest producto = ProductoRequest.builder()
+                .id(1L)
+                .nombre("Arroz")
+                .descripcion("Arroz blanco grano fino")
+                .precio(BigDecimal.TEN)
+                .stock(0)
+                .build();
+
+        String message = assertThrows(IllegalArgumentException.class, () -> productoService.crear(producto)).getMessage();
+        assertEquals("El producto a crear no puede tener id", message);
+    }
+
+    @Test
+    void actualizar_conProductoValidoExistente_retornaProductoActualizado() {
         String nuevoNombre = "Arroz Grano Fino";
 
         Producto productoExistente = ProductoBuilder.basic()
@@ -85,11 +100,25 @@ public class ProductoServiceTests extends IntegrationTests {
                 .stock(productoExistente.getStock())
                 .build();
 
-        Producto productoActualizado = productoService.crearOActualizar(producto);
+        Producto productoActualizado = productoService.actualizar(producto);
 
         assertNotNull(productoActualizado);
         assertNotNull(productoActualizado.getId());
         assertEquals(productoExistente.getId(), productoActualizado.getId());
         assertEquals(nuevoNombre, productoActualizado.getNombre());
+    }
+
+    @Test
+    void actualizar_conProductoSinId_lanzaExcepcion() {
+        ProductoRequest producto = ProductoRequest.builder()
+                .id(null)
+                .nombre("Arroz")
+                .descripcion("Arroz blanco grano fino")
+                .precio(BigDecimal.TEN)
+                .stock(0)
+                .build();
+
+        String message = assertThrows(IllegalArgumentException.class, () -> productoService.actualizar(producto)).getMessage();
+        assertEquals("El producto a actualizar debe tener id", message);
     }
 }
