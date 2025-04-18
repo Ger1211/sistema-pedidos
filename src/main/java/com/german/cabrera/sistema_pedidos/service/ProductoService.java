@@ -1,5 +1,6 @@
 package com.german.cabrera.sistema_pedidos.service;
 
+import com.german.cabrera.sistema_pedidos.dto.producto.ProductoRequest;
 import com.german.cabrera.sistema_pedidos.model.Producto;
 import com.german.cabrera.sistema_pedidos.repository.ProductoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,5 +22,10 @@ public class ProductoService {
     public Producto obtenerProducto(Long productoId) {
         return productoRepository.findById(productoId)
                 .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado"));
+    }
+
+    public Producto crear(ProductoRequest producto) {
+        Producto productoACrear = new Producto(producto);
+        return productoRepository.save(productoACrear);
     }
 }

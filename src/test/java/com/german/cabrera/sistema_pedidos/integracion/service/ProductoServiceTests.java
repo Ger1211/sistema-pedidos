@@ -1,6 +1,7 @@
 package com.german.cabrera.sistema_pedidos.integracion.service;
 
 import com.german.cabrera.sistema_pedidos.builder.ProductoBuilder;
+import com.german.cabrera.sistema_pedidos.dto.producto.ProductoRequest;
 import com.german.cabrera.sistema_pedidos.model.Producto;
 import com.german.cabrera.sistema_pedidos.service.ProductoService;
 import jakarta.persistence.EntityManager;
@@ -8,6 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,5 +49,20 @@ public class ProductoServiceTests extends IntegrationTests {
 
         String message = assertThrows(EntityNotFoundException.class, () -> productoService.obtenerProducto(productoInexistente)).getMessage();
         assertEquals("Producto no encontrado", message);
+    }
+
+    @Test
+    void crear_conProductoValido_retornaProductoCreado() {
+        ProductoRequest producto = ProductoRequest.builder()
+                .nombre("Arroz")
+                .descripcion("Arroz blanco grano fino")
+                .precio(BigDecimal.TEN)
+                .stock(0)
+                .build();
+
+        Producto productoCreado = productoService.crear(producto);
+
+        assertNotNull(productoCreado);
+        assertNotNull(productoCreado.getId());
     }
 }

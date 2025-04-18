@@ -1,12 +1,11 @@
 package com.german.cabrera.sistema_pedidos.controller;
 
+import com.german.cabrera.sistema_pedidos.dto.producto.ProductoRequest;
 import com.german.cabrera.sistema_pedidos.service.ProductoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/productos")
@@ -21,5 +20,10 @@ public class ProductoController {
             return ResponseEntity.ok(productoService.obtenerProducto(productoId));
         }
         return ResponseEntity.ok(productoService.obtenerTodos());
+    }
+
+    @PostMapping
+    public ResponseEntity<?> crear(@Valid @RequestBody ProductoRequest producto) {
+        return ResponseEntity.ok(productoService.crear(producto));
     }
 }
