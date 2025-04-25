@@ -12,6 +12,7 @@ import com.german.cabrera.sistema_pedidos.repository.PedidoRepository;
 import com.german.cabrera.sistema_pedidos.repository.ProductoRepository;
 import com.german.cabrera.sistema_pedidos.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -28,6 +29,7 @@ public class PedidoService {
     private final ProductoRepository productoRepository;
     private final PedidoRepository pedidoRepository;
 
+    @Transactional
     public PedidoResponse crear(PedidoRequest pedidoRequest) {
         Usuario cliente = obtenerCliente(pedidoRequest.getClienteId());
         validar(cliente);
@@ -41,6 +43,13 @@ public class PedidoService {
 
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
         return obtenerPedidoResponse(pedidoGuardado);
+    }
+
+    public List<PedidoResponse> obtenerPorCliente(Long clienteId) {
+        Usuario cliente = obtenerCliente(clienteId);
+        List<Pedido> pedidos = pedidoRepository.findByCliente(cliente);
+
+        return pedidos.stream().map(this::obtenerPedidoResponse).toList();
     }
 
     private Usuario obtenerCliente(Long clienteId) {

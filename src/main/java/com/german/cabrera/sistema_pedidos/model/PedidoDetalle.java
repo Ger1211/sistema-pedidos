@@ -2,12 +2,16 @@ package com.german.cabrera.sistema_pedidos.model;
 
 import com.german.cabrera.sistema_pedidos.dto.pedido.DetallePedidoRequest;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class PedidoDetalle {
 
     @Id

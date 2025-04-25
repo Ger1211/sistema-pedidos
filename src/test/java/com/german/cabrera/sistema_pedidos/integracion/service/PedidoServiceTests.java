@@ -5,6 +5,8 @@ import com.german.cabrera.sistema_pedidos.builder.UsuarioBuilder;
 import com.german.cabrera.sistema_pedidos.dto.pedido.DetallePedidoRequest;
 import com.german.cabrera.sistema_pedidos.dto.pedido.PedidoRequest;
 import com.german.cabrera.sistema_pedidos.dto.pedido.PedidoResponse;
+import com.german.cabrera.sistema_pedidos.model.Pedido;
+import com.german.cabrera.sistema_pedidos.model.PedidoDetalle;
 import com.german.cabrera.sistema_pedidos.model.Producto;
 import com.german.cabrera.sistema_pedidos.model.Usuario;
 import com.german.cabrera.sistema_pedidos.service.PedidoService;
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -92,5 +95,32 @@ public class PedidoServiceTests extends IntegrationTests {
                 "El usuario no es un cliente o admin");
     }
 
+    @Test
+    void obtenerPorCliente_conPedidoExistenteDeCliente_retornaPedido() {
+        Usuario cliente = UsuarioBuilder.cliente().build(entityManager);
+        Producto producto = ProductoBuilder.basic().build(entityManager);
+        Pedido pedido = Pedido.builder()
+                .fecha(LocalDateTime.now())
+                .cliente(cliente)
+                .total(producto.getPrecio())
+                .detalles(List.of())
+                .build();
+
+        PedidoDetalle detalle = PedidoDetalle.builder()
+                .cantidad(1)
+                .producto(producto)
+                .pedido(pedido)
+                .build();
+
+        pedido.setDetalles(List.of(detalle));
+
+        entityManager.persist(pedido);
+
+        List<PedidoResponse> pedidos = pedidoService.obtenerPorCliente(cliente.getId());
+
+        assertNotNull(pedidos);
+        assertEquals(1, pedidos.size());
+        assertEquals(pedido.getId(), pedidos.get(0).getId());
+    }
 
 }

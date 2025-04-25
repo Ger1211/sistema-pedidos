@@ -19,4 +19,9 @@ public class PedidoController {
     public ResponseEntity<?> crear(@Valid @RequestBody PedidoRequest pedidoRequest) {
         return new ResponseEntity<>(pedidoService.crear(pedidoRequest), HttpStatus.CREATED);
     }
+
+    @GetMapping("/clientes/{clienteId}")
+    public ResponseEntity<?> obtenerPorCliente(@PathVariable Long clienteId) {
+        return ResponseEntity.ok(pedidoService.obtenerPorCliente(clienteId));
+    }
 }
