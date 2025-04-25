@@ -52,6 +52,12 @@ public class PedidoService {
         return pedidos.stream().map(this::obtenerPedidoResponse).toList();
     }
 
+    public PedidoResponse obtenerPorId(Long pedidoId) {
+        Pedido pedido = pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new EntityNotFoundException("El pedido no existe"));
+        return obtenerPedidoResponse(pedido);
+    }
+
     private Usuario obtenerCliente(Long clienteId) {
         return usuarioRepository.findById(clienteId)
                 .orElseThrow(() -> new EntityNotFoundException("El usuario no existe"));

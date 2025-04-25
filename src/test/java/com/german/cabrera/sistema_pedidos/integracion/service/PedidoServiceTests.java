@@ -123,4 +123,37 @@ public class PedidoServiceTests extends IntegrationTests {
         assertEquals(pedido.getId(), pedidos.get(0).getId());
     }
 
+    @Test
+    void obtenerPorId_conPedidoExistente_retornaPedido() {
+        Usuario cliente = UsuarioBuilder.cliente().build(entityManager);
+        Producto producto = ProductoBuilder.basic().build(entityManager);
+        Pedido pedido = Pedido.builder()
+                .fecha(LocalDateTime.now())
+                .cliente(cliente)
+                .total(producto.getPrecio())
+                .detalles(List.of())
+                .build();
+
+        PedidoDetalle detalle = PedidoDetalle.builder()
+                .cantidad(1)
+                .producto(producto)
+                .pedido(pedido)
+                .build();
+
+        pedido.setDetalles(List.of(detalle));
+
+        entityManager.persist(pedido);
+
+        PedidoResponse pedidoObtenido = pedidoService.obtenerPorId(pedido.getId());
+
+        assertEquals(pedido.getId(), pedidoObtenido.getId());
+        assertEquals(1, pedido.getDetalles().size());
+    }
+
+    @Test
+    void obtenerPorId_conPedidoInexistente_lanzaExcepcion() {
+        assertThrows(EntityNotFoundException.class, () -> pedidoService.obtenerPorId(-1L),
+                "El pedido no existe");
+    }
+
 }

@@ -24,4 +24,9 @@ public class PedidoController {
     public ResponseEntity<?> obtenerPorCliente(@PathVariable Long clienteId) {
         return ResponseEntity.ok(pedidoService.obtenerPorCliente(clienteId));
     }
+
+    @GetMapping("/{pedidoId}")
+    public ResponseEntity<?> obtenerPorId(@PathVariable Long pedidoId) {
+        return ResponseEntity.ok(pedidoService.obtenerPorId(pedidoId));
+    }
 }
